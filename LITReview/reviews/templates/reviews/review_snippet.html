@@ -1,0 +1,75 @@
+{% load static %}
+{% if user.is_authenticated %}
+    <div class="border border-dark p-1">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <span class="badge bg-success">Review</span>
+            </h3>
+            {% if el.user == user %}
+            <a>You posted this review</a> 
+            {% else %}
+            <a>Review posted by ({{ el.user }})</a>            
+            {% endif %}
+            <a>{{ el.time_created|date:"H:i, F d, Y" }}</a>
+        </div>
+        <hr class="border-top border-2 border-secondary">
+        <div class="d-flex justify-content-between float-end">
+            <div>
+                {% if title == 'Posts' and el.user == user %}
+                    <a class="btn btn-outline-success me-2"
+                       href="{% url 'update-review' el.id %}">Edit</a>
+                    <a class="btn btn-outline-danger me-2"
+                       href="{% url 'delete-review' el.id %}">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        <h6 class="text-danger">{{ el.headline }}</h6>
+        <h6>
+            {% for i in "12345" %}
+                {% if i|add:"-1" < el.rating %}
+                    <i class="fa fa-star fa-sm text-warning"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+            {% endfor %}
+        </h6>
+        <p>{{ el.body }}</p>
+        <!-- Begin Ticket details  -->
+        <div class="border border-dark p-1">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">
+                    <span class="badge bg-primary">Ticket</span>
+                </h3>
+                {% if el.ticket.user == user %}
+                <a>You asked for a review </a>
+               {% else %}
+                <a>{{ el.ticket.user }} asked for a review</a>
+               {% endif %}
+                <a>{{ el.ticket.time_created|date:"H:i, F d, Y" }}</a>
+            </div>
+            <hr class="border-top border-2 border-secondary">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6>{{ el.ticket.title }}</h6>
+            </div>
+            <div class="description">
+                <div class="row">
+                    {% if el.ticket.image %}
+                        <div class="col-md-2">
+                            <img class="img-thumbnail mb-1"
+                                 src="{{ el.ticket.image.url }}"
+                                 alt="{{ el.ticket.title }}"
+                                 style="width: 150px">
+                        </div>
+                        <div class="col-md-10">
+                        {% else %}
+                            <div class="col-md-0"></div>
+                            <div class="col-md-12">
+                            {% endif %}
+                            <p class="text-justify mt-3">{{ el.ticket.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Ticket details  -->
+            </div>
+        </div>
+    {% endif %}

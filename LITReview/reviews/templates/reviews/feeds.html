@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container border border-dark mb-3">
+            <h2 class="title text-center">{{ title }}</h2>
+            <hr class="border-top border border-dark">
+            <div class="d-flex justify-content-end p-1">
+                {% if title == 'Feeds' %}
+                <a class="btn btn-outline-primary me-2" href="{% url 'add-ticket' %}?next=feeds">Request a review</a>
+                <a class="btn btn-outline-success me-2" href="{% url 'add-review-full' %}?next=feeds">Create a review</a>
+               {% endif %}                   
+            </div>
+            <ul class="list-unstyled">
+                {% for el in feeds %}
+                    <li class="post mb-2">
+                        {% if el.content_type == 'TICKET' %}
+                            {% include 'reviews/ticket_snippet.html' %}
+                        {% else %}
+                            {% include 'reviews/review_snippet.html' %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% include 'core/includes/pagination.html' %}
+        </div>
+    {% endif %}
+{% endblock content %}

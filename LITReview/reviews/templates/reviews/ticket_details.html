@@ -1,0 +1,31 @@
+<div class="border border-secondary p-1">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">
+            <span class="badge bg-primary">Ticket</span>
+        </h3>
+        <a>Opened by ({{ ticket.user }})</a>
+        <a>{{ ticket.time_created|date:"H:i, F d, Y" }}</a>
+    </div>
+    <hr class="border-top border-2 border-secondary">
+    <div class="d-flex justify-content-between align-items-center">
+        <h6>{{ ticket.title }}</h6>
+    </div>
+    <div class="description">
+        <div class="row">
+            {% if ticket.image %}
+                <div class="col-md-2">
+                    <img class="img-thumbnail mb-1"
+                         src="{{ ticket.image.url }}"
+                         alt="{{ ticket.title }}"
+                         style="width: 150px">
+                </div>
+                <div class="col-md-10">
+                {% else %}
+                    <div class="col-md-0"></div>
+                    <div class="col-md-12">
+                {% endif %}
+                    <p class="text-justify mt-3">{{ ticket.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>

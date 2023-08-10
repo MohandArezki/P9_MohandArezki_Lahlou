@@ -1,0 +1,34 @@
+<!-- pagination.html -->
+{% if feeds.paginator.num_pages > 1 %}
+    <nav class="page-nav mb-3">
+        <ul class="pagination justify-content-end">
+            {% if feeds.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1"><<</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ feeds.previous_page_number }}"><</a>
+                </li>
+            {% endif %}
+            {% for num in feeds.paginator.page_range %}
+                {% if feeds.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% elif num > feeds.number|add:'-3' and num < feeds.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if feeds.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ feeds.next_page_number }}">></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ feeds.paginator.num_pages }}">>></a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

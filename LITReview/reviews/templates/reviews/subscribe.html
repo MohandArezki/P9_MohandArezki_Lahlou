@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="form-content my-5 p-3">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-9">
+                        <div class="card shadow-lg border-0 rounded-lg mt-0 mb-3">
+                            <div class="card-header justify-content-center">
+                                <h3 class="font-weight-light my-4 text-center">{{ title }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <form class="row mb-3" method="post">
+                                    {% csrf_token %}
+                                    <div class="col-md-8">
+                                        {% bootstrap_form form %}
+                                        <button class="btn btn-outline-success"
+                                                type="submit"
+                                                name="action"
+                                                value="subscribe">Subscribe</button>
+                                    </div>
+                                </form>
+                                <!-- Users you follow -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {% if user_follows %}
+                                            <div class="card">
+                                                <ul class="list-group">
+                                                    <h5 class="text-center">list of users you follow</h5>
+                                                    {% for follow in user_follows %}
+                                                        <li class="list-group-item">
+                                                            <div class="d-flex align-items-center">
+                                                                <div>{{ follow.followed_user.username }}</div>
+                                                                <form method="post" class="ms-auto">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden"
+                                                                           name="followed_user"
+                                                                           value="{{ follow.followed_user.id }}">
+                                                                    <button class="btn btn-outline-danger"
+                                                                            type="submit"
+                                                                            name="action"
+                                                                            value="unsubscribe">Unsubscribe</button>
+                                                                </form>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            <h5 class="text-center text-muted">No subscriptions</h5>
+                                        {% endif %}
+                                    </div>
+                                    <!-- Users following you -->
+                                    <div class="col-md-6">
+                                        {% if followed_by %}
+                                            <div class="card">
+                                                <ul class="list-group">
+                                                    <h5 class="text-center">list of users who follow you</h5>
+                                                    {% for follow in followed_by %}
+                                                        <li class="list-group-item">
+                                                            <div class="d-flex align-items-start">
+                                                                <div>{{ follow.user.username }}</div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            <h5 class="text-center text-muted">No users following you</h5>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

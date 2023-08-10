@@ -1,0 +1,44 @@
+{% if user.is_authenticated %}
+<div class="border border-secondary p-1">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">
+            <span class="badge bg-primary">Ticket</span>
+        </h3>
+        {% if el.user == user %}
+        <a>You asked for a review </a>
+        {% else %}
+        <a> ({{ el.user }}) asked for a review</a>
+        {% endif %}
+        <a>{{ el.time_created|date:"H:i, F d, Y" }}</a>
+    </div>
+    <hr class="border-top border-2 border-secondary">
+    <div class="d-flex justify-content-between align-items-center">
+        <h6>{{ el.title }}</h6>
+        <div>
+            {% if not el.is_closed %}
+            <a class="btn btn-outline-primary me-2" href="{% url 'add-review-response' el.id %}">Post a Reply</a>
+            {% if el.user == user and title == 'Posts' %}
+            <a class="btn btn-outline-success me-2" href="{% url 'update-ticket' el.id %}">Edit</a>
+            <a class="btn btn-outline-danger me-2" href="{% url 'delete-ticket' el.id %}">Delete</a>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="description">
+        <div class="row">
+            {% if el.image %}
+            <div class="col-md-2">
+                <img class="img-thumbnail mb-1" src="{{ el.image.url }}" alt="{{ el.title }}" style="width: 150px">
+            </div>
+            <div class="col-md-10">
+                {% else %}
+                <div class="col-md-0"></div>
+                <div class="col-md-12">
+                    {% endif %}
+                    <p class="text-justify mt-3">{{ el.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
