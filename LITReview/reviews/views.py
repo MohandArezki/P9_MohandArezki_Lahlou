@@ -88,7 +88,7 @@ class TicketDeleteView(View):
     template_name = "reviews/confirm_delete.html"
 
     def get(self, request, pk):
-        ticket_instance = get_object_or_404(Ticket, pk=pk)
+        ticket_instance = get_object_or_404(Ticket, pk=pk, user=request.user)
         context = {
             "type": "TICKET",
             "title": "Delete a Ticket",
@@ -98,7 +98,8 @@ class TicketDeleteView(View):
         return render(request, self.template_name, context=context)
 
     def post(self, request, pk):
-        ticket_instance = get_object_or_404(Ticket, pk=pk)
+        # make sure it's the right ticket before deleting (Ticket + Current User)
+        ticket_instance = get_object_or_404(Ticket, pk=pk, user=request.user)
         ticket_instance.delete()
         return redirect("posts")
 
@@ -115,8 +116,10 @@ class TicketUpdateView(UpdateView):
         """
         Get the ticket object based on the provided primary key.
         """
-        pk = self.kwargs.get("pk")
-        return get_object_or_404(Ticket, pk=pk)
+        pk = self.kwargs.get("pk")        
+        # make sure it's the right ticket before updating (Ticket + Current User)
+        ticket_instance = get_object_or_404(Ticket, pk=pk, user=self.request.user)
+        return ticket_instance
 
     def get_context_data(self, **kwargs):
         """
@@ -269,8 +272,17 @@ class ReviewUpdateView(UpdateView):
         context["type"] = "response"
         context["ticket"] = self.object.ticket
         context["title"] = "Update Review"
-        context["r_form"] = self.get_form()  # Get the form instance
+        context["r_form"] = self.get_form()
         return context
+
+    def get_object(self, queryset=None):
+        """
+        Get the review object based on the provided primary key.
+        """
+        pk = self.kwargs.get("pk")
+        # make sure it's the right review before updating (Review + Current User)
+        review_instance = get_object_or_404(Ticket, pk=pk, user=self.request.user)
+        return review_instance
 
     def get_success_url(self):
         return reverse("posts")
@@ -285,7 +297,9 @@ class ReviewDeleteView(DeleteView):
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
-        return get_object_or_404(Review, pk=pk)
+        # make sure it's the right review before updating (Review + Current User)
+        review_instance = get_object_or_404(Ticket, pk=pk, user=self.request.user)        
+        return review_instance
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
