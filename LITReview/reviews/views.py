@@ -281,7 +281,7 @@ class ReviewUpdateView(UpdateView):
         """
         pk = self.kwargs.get("pk")
         # make sure it's the right review before updating (Review + Current User)
-        review_instance = get_object_or_404(Ticket, pk=pk, user=self.request.user)
+        review_instance = get_object_or_404(Review, pk=pk, user=self.request.user)
         return review_instance
 
     def get_success_url(self):
@@ -298,7 +298,7 @@ class ReviewDeleteView(DeleteView):
     def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
         # make sure it's the right review before updating (Review + Current User)
-        review_instance = get_object_or_404(Ticket, pk=pk, user=self.request.user)        
+        review_instance = get_object_or_404(Review, pk=pk, user=self.request.user)        
         return review_instance
 
     def get_context_data(self, **kwargs):
