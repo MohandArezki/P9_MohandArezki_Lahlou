@@ -75,4 +75,7 @@ python manage.py runserver
 | liam            | P@ssword123    |
 | lucas           | P@ssword123    |
 
+<center>
+    <img src="assets/p9_valide.png" alt="Logo" />
+</center>
 ```
