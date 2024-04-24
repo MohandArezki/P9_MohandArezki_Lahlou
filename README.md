@@ -1,4 +1,8 @@
-# Projet 09 : Développez une application Web en utilisant Django
+# Projet 09
+Développez une application Web en utilisant Django
+## Objectifs pédagogiques
+1. Développer la partie Front-End d’une application avec HTML, CSS et JavaScript
+2. Interagir avec une API REST
 
 <center>
     <img src="assets/logo-black.png" alt="Logo" />
